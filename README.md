@@ -1,1 +1,1 @@
-# BIMM143
+#Bioinformatics
