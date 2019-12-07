@@ -1,0 +1,83 @@
+---
+title: "Class7InClass"
+author: "Shreya Sunkara"
+date: "10/22/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##R functions revisited
+
+Source my functions from last day
+
+```{r}
+source("http://tinyurl.com.rescale-R")
+```
+
+Write a function to find where there are NA elements in two input vectors.
+First make some simple input where I know the answer.
+```{r}
+x<-c(1,2,NA,3,NA)
+y<-c(NA,3,NA,3,4)
+```
+
+
+```{r}
+is.na(x)
+```
+```{r}
+which(is.na(x))
+```
+
+Value that combines function and gives only one result, working snippet!
+```{r}
+is.na(x)
+sum(is.na(x))
+sum(is.na(x)&is.na(y))
+```
+Rewrite snippet as first function
+```{r}
+both_na<-function(x,y){sum(is.na(x)&is.na(y))}
+```
+Eejit proofing
+```{r}
+x<-c(NA,NA,NA)
+y1<-c(1,NA,NA)
+y2<-c(1,NA,NA,NA)
+both_na(x,y1)
+both_na(x,y2)
+```
+```{r}
+x<-c(1,NA,NA)
+y3<-c(1,NA,NA,NA,NA,NA,NA)
+both_na(x,y3)
+```
+Add a check for when inputs x and y are not same length
+```{r}
+both_na2<-function(x,y)
+  if(length(x)!=length(y)){
+    stop("Inputs x and y should be the same length.")
+    sum(is.na(x)&is.na(y))
+  }
+```
+
+
+```{r}
+student1 <- c(100,100,100,100,100,100,100,90)
+student2 <- c(100,NA,90,90,90,90,97,80)
+
+which.min(student1)
+student1[-which.min(student1)]
+mean(student1[-which.min(student1)],na.rm=TRUE)
+
+which.min(student2)
+student2[-which.min(student2)]
+mean(student2[-which.min(student2)],na.rm=TRUE)
+
+
+```
+
+
