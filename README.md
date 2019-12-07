@@ -1,7 +1,10 @@
 ## BIMM 143 Class Projects
 #Index of Material
+
 Introductory Material: Working with R
+
 Class05: [Data Exploration and Visualization in R, HTML, MD, Rmd](https://github.com/shreyasunkara/BIMM143/blob/master/Class5.R)
+
 Class06: [R Functions](https://github.com/shreyasunkara/BIMM143/blob/master/Class6Markdown.Rmd)
 Class07: [R Packages: Working with CRAN and BioConductor]()
 #Using R and Other Tools for Bioinformatics Analysis
