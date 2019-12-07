@@ -1,5 +1,5 @@
 ## BIMM 143 Class Projects
-#Index of Material
+# Index of Material
 
 Introductory Material: Working with R
 
@@ -9,7 +9,7 @@ Class06: [R Functions](https://github.com/shreyasunkara/BIMM143/blob/master/Clas
 
 Class07: [R Packages: Working with CRAN and BioConductor](https://github.com/shreyasunkara/BIMM143/blob/master/Class7.Rmd)
 
-#Using R and Other Tools for Bioinformatics Analysis
+# Using R and Other Tools for Bioinformatics Analysis
 
 Class08: [Machine Learning - Hierarchical Clustering](https://github.com/shreyasunkara/BIMM143/blob/master/Class8.Rmd)
 
