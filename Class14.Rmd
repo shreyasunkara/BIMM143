@@ -1,0 +1,124 @@
+---
+title: "Class14"
+author: "Shreya Sunkara"
+date: "11/12/2019"
+output: html_document
+---
+
+##DESeq2 Setup
+
+We will use the DESeq2 package from Bioconductor. To install this package, we ran in the console. (Note: eval=FALSE)
+
+```{r eval=FALSE}
+#install.packages("BiocManager")
+#BiocManager::install()
+#BiocManager::install("DESeq2")
+```
+##Input Dataset
+
+Input countData and colData (metadata)
+
+```{r}
+counts <- read.csv("airway_scaledcounts.csv",stringsAsFactors = FALSE)
+metadata <-  read.csv("airway_metadata.csv", stringsAsFactors = FALSE)
+```
+Have a peak...
+```{r}
+head(counts)
+```
+```{r}
+head(metadata)
+```
+
+How many genes do we have in this dataset?
+```{r}
+nrow(counts)
+```
+How many experiments do we have in this dataset?
+```{r}
+ncol(counts)
+```
+```{r}
+nrow(metadata)
+```
+
+```{r}
+control <- metadata[metadata[,"dex"]=="control",]
+```
+
+Now, calculate mean values across control columns of **countdata**
+```{r}
+control.mean <- rowSums(counts[,control$id])/length(control$id)
+names(control.mean) <- counts$engene
+```
+Now, do the same thing for the treated columns of **countdata**
+```{r}
+treated.mean <- rowSums(counts[,treated$id])/length(control$id)
+names(treated.mean) <- counts$engene
+```
+```{r}
+meancounts <- data.frame(control.mean, treated.mean)
+plot(meancounts)
+```
+
+Next, we want to show these data on a log scale
+```{r}
+plot(meancounts$control.mean,meancounts$treated.mean,log="xy")
+```
+Positive fold change would mean it's upregulated by drug; negative fold change would mean it's downregulated by drug.
+```{r}
+meancounts$log2fc <- log2(meancounts[,"treated.mean"]/meancounts[,"control.mean"])
+head(meancounts)
+```
+Now, we want to weed out the NaN and Inf values
+```{r}
+zero.vals <- which(meancounts[,1:2]==0, arr.ind=TRUE)
+
+to.rm <- unique(zero.vals[,1])
+mycounts <- meancounts[-to.rm,]
+head(mycounts)
+```
+To see how many genes are up and down regulated
+```{r}
+up.ind <- mycounts$log2fc > 2
+down.ind <- mycounts$log2fc < (-2)
+```
+```{r}
+sum(up.ind)
+```
+```{r}
+head(mycounts[up.ind,])
+```
+# DESeq2 Analysis
+Now, to properly analyze the data. DESeq2 is an R package
+```{r}
+library(DESeq2)
+```
+```{r}
+dds <- DESeqDataSetFromMatrix(countData=counts, 
+                              colData=metadata, 
+                              design=~dex, 
+                              tidy=TRUE)
+dds
+```
+
+Get results
+```{r}
+res <- results(dds)
+res
+```
+```{r}
+plot(res$log2FoldChange,-log(res$padj))
+abline(v=c(2,2),col="gray",lty=2)
+
+```
+```{r}
+write.csv(res,file="expression_results.csv")
+```
+
+
+
+
+
+
+

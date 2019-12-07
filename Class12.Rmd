@@ -1,0 +1,26 @@
+---
+title: "Class12"
+author: "Shreya Sunkara"
+date: "11/7/2019"
+output: html_document
+---
+```{r}
+library(bio3d)
+#download PDB file
+get.pdb("1hsg")
+```
+```{r}
+hiv<-read.pdb("1hsg.pdb")
+protein<-atom.select(pdb,"protein",value=TRUE)
+write.pdb(protein,file="1hsg_protein.pdb")
+```
+and for the ligand
+```{r}
+ligand<-atom.select(pdb,"ligand",value=TRUE)
+write.pdb(ligand,file="1hsg_ligand.pdb")
+```
+```{r}
+prot<-trim.pdb(hiv,"protein")
+lig<-trim.pdb(hiv,"ligand")
+```
+
