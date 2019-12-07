@@ -1,0 +1,84 @@
+---
+title: "Part1HandsOnWS"
+author: "Shreya Sunkara"
+date: "11/26/2019"
+output: html_document
+---
+
+```{r}
+projects <- getGDCprojects()
+head(projects)
+```
+```{r}
+View(projects)
+```
+```{r}
+cases_by_project <- cases() %>%
+  facet("project.project_id") %>%
+  aggregations()
+head(cases_by_project)
+```
+```{r}
+x <- cases_by_project$project.project_id
+
+# Make a custom color vector for our plot
+colvec <- rep("lightblue", nrow(x))
+colvec[(x$key=="TCGA-PAAD")] <- "red"
+colvec
+
+# Plot with 'log' for y axis and rotate labels with 'las'
+#plot data needs to be x$docount bc that's where column with data is located, for names.arg, you need to give it X, so chain it together with the column where it's located
+barplot(x$doc_count, names.arg=x$key, log="y", col=colvec, las=2)
+```
+
+```{r}
+#now using file summary of TGGA biolinks
+samp <- getSampleFilesSummary("TCGA-PAAD")
+head(samp)
+```
+```{r}
+query <- GDCquery(project="TCGA-PAAD",
+                  data.category="Transcriptome Profiling",
+                  data.type="Gene Expression Quantification")
+
+ans <- getResults(query)
+```
+```{r}
+head(ans)
+```
+```{r}
+View(ans)
+```
+```{r}
+nrow(ans)
+```
+```{r}
+maf.file <- GDCquery_Maf(tumor="PAAD", pipelines = "mutect")
+```
+```{r}
+head(maf.file)
+```
+```{r}
+vars = read.maf(maf = maf.file, verbose = FALSE)
+```
+```{r}
+plotmafSummary(vars)
+```
+```{r}
+oncoplot(maf = vars, top = 10)
+```
+```{r}
+# Oncoplot for our top 10 most frequently mutated genes
+pdf("oncoplot_panc.pdf")
+oncoplot(maf = vars, top = 10, fontSize = 12)
+dev.off()
+```
+```{r}
+oncostrip(maf=vars, genes=c("KRAS", "TP53"))
+```
+```{r}
+lollipopPlot(vars, gene='TP53')
+```
+
+
+
